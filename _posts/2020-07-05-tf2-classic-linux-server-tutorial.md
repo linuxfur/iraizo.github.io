@@ -17,7 +17,7 @@ layout: post
 - Move the TF2 Classic .7z file where you want your server installed
 - Download the steamcmd package by running `sudo apt install steamCMD`.
 - Run `steamcmd` and after its done run `login anonymous` in steamcmd.
-- Run `force install_dir insert_full_path_here` in steamCMD to select the directory the server install into`.
+- Run `force_install_dir insert_full_path_here` in steamCMD to select the directory the server install into.
 - After you did that run `app_update 244310 validate` in steamCMD.
 - Type `exit` to get out of steamCMD.
 
