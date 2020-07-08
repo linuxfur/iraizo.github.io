@@ -36,7 +36,7 @@ layout: post
 - Use any text editor of your choice to create `runserver.sh`, like nano, `nano runserver.sh`.
 - Input `./srcds_run -console -game tf2classic +map pl_upward +maxplayers 24` (this is a example).
 - Exit out of nano by pressing `strg (ctrl) + x`.
-- run `chmod+x runserver.sh`
+- run `chmod +x runserver.sh`
 
 ## Step 5: Create a user
 - Run `createuser username_here` to create a user.
