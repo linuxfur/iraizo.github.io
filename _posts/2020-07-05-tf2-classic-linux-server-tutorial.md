@@ -24,7 +24,7 @@ layout: post
 ## Step 2: Moving files
 - Install p7zip by running `sudo apt install p7zip-full`.
 - Run `7z x insert_tf2_classic_name_here.7z` to extract the folder.
-- Run `mv tf2classic insert_full_path_to_server_directory_here` to move the folder to your server`
+- Run `mv tf2classic insert_full_path_to_server_directory_here` to move the folder to your server
 
 ## Step 3: Configuration
 ### All steps will be executed in the tf2classic folder, `cd tf2classic`.
