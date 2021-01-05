@@ -8,17 +8,19 @@ layout: post
 - A Linux server running Ubuntu Server\* on an x86_64 CPU. You cannot run SRCDS on any other architecture besides an x86_64 CPU. Sorry Raspberry Pis. And no, you do not want to host a server using WINE so stop suggesting that. 
 - A SFTP/SSH client (PuTTY, Termius, FileZilla, MobaXterm)
 - At least 16GB of free storage
+- A minimum of a 10Mbps upload speed if you intend on hosting a server over the Internet. No need to worry for LAN servers.
 
 This guide was written for and tested on Ubuntu Server 20.04 LTS, however any Debian-based distro should work similarly and fine using this guide.
 
 _\*Ubuntu 20.04 LTS is the first Ubuntu version that starts to phase out many i386 libraries from Focal Fossa repos and future Ubuntu versions. Many Source games still rely on i386 libraries. While TF2C, Steam, and SteamCMD are known to work fine, it is possible other Source games and custom plugins and addons may or may not work properly without utilization of PPAs._
 
 # Creating a steam user for SteamCMD and Source SDK Base 2013 Dedicated Server
-Pick a directory to install your server into. Industry standard is usually in `/opt`, but `/home` may be easier for you. We'll pick `/opt/tf2classic`.
+Pick a directory to install your server into. Industry standard is usually in `/opt`, but `/home` may be easier for you. If you want to use a directory in `/home`, omit the `-d` option as useradd will create a directory in `/home` with the user's username, ours being `steam`.<br>
+We'll pick `/opt/tf2classic`.
 
 Create a user with that home directory and give it a stronk password:
 ```bash
-sudo sudo useradd -m -d /opt/tf2classic -s /usr/bin/bash steam
+sudo useradd -m -d /opt/tf2classic -s /usr/bin/bash steam
 sudo passwd steam
 ```
 `-m` creates a home directory for it, `-d /opt/tf2classic` specifies where our home directory will be, and `-s /usr/bin/bash` sets the shell to bash.
@@ -32,9 +34,9 @@ sudo dpkg --add-architecture i386
 sudo apt update
 ```
 
-Install SteamCMD and p7zip-full:
+Install SteamCMD, p7zip-full, and unzip:
 ```bash
-sudo apt install steamcmd p7zip-full
+sudo apt install steamcmd p7zip-full unzip
 ```
 
 You will also need the i386 library of `libncurses5` and `libtinfo5`. 
@@ -75,7 +77,7 @@ This will take a while depending on your connection and the mirror's load. If yo
 
 `magnet:?xt=urn:btih:2fc7113011ff80f8f05ad8df00b8228aad230117&dn=tf2classic-2.0.1.7z&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce`
 
-Extract the 7z by running `7z x tf2classic-2.0.1.7zz`. This will be a while depending on your disk speed.
+Extract the 7z by running `7z x tf2classic-2.0.1.7z`. This will be a while depending on your disk speed.
 
 Then finally move the directory into your SDK 2013 MP folder: `mv tf2classic insert_full_path_to_server_directory_here`. 
 
@@ -84,7 +86,7 @@ Generate your server config(s) on [cfg.tf](https://cfg.tf/server/).
 
 Make sure the server type is set to "Internet and LAN" if you want players outside your LAN to be able to join _(you may need to port forward if you're on consumer broadband or open ports on your firewall)_.
 
-Upload the generated ZIP file to your server using SFTP and move the `cfg` folder into `tf2classic/cfg`.
+Upload the generated ZIP file to your server using SFTP, unzip the folder using `unzip <archive>.zip`, and move the `cfg` folder into `tf2classic/cfg`.
 
 # Creating the server script.
 ### All steps will be executed in the server folder where you downloaded SDK Base 2013 DS to.
@@ -167,7 +169,8 @@ You also need to give the player your **WAN** IP after port forwarding or openin
 You will give players that IP address to put in their console to connect to. E.g. `connect 42.0.13.337`
 
 ## _How do I get SourceMod?_
-Unfortunately, installing SourceMod+MetaMod to TF2C isn't as simple as drag and dropping the folders like officially supported games are such as traditional TF2 and CSS. There are far too many extra steps you need to do when you install SourceMod+MetaMod that it warrants a separate guide for. I do intend to write a guide for this in the future.
+Unfortunately, installing SourceMod+MetaMod to TF2C isn't as simple as drag and dropping the folders like officially supported games are such as traditional TF2 and CSS. There are far too many extra steps you need to do when you install SourceMod+MetaMod that it warrants a separate guide for. ~~I do intend to write a guide for this in the future.~~
+I've written a guide for that! You can view it here: https://iraizo.github.io/tf2-classic-sourcemod-setup/
 
 ## _How do I make my server run automatically?_
 The default init modern distros use, systemd, supports creating service unit files similarily to how we used to create startup shell scripts, just in a more unified format and even some neat features. There are many types of configurations for these such as using screen/tmux or even an RCON program. But for simplicity we can create a very basic simple unit that spawns the server and nothing more.
@@ -209,3 +212,7 @@ If you want, you can replace the `ExecStart=` line with the actual start line in
 Example: `ExecStart=/opt/tf2classic/server/srcds_run -console -game tf2classic +map pl_upward +maxplayers 24`
 
 If you're looking for more professional scripts that I even use myself, take a look at this wonderful post on Alliedmodders: https://forums.alliedmods.net/showthread.php?t=273139
+
+<hr>
+
+##### Revised and Rewritten by [linuxfur](https://twitter.com/linuxfur) \<3
